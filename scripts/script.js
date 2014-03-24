@@ -17,18 +17,25 @@ var allQuestions = [
 jsonQ = JSON.stringify(allQuestions);
 
 
-var apiurl = 'http://localhost:5000/question';
 
-function httpGet(URL) {
-    xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", URL, false);
-    xmlHttp.send(null);
 
-    return xmlHttp.responseText;
-  }
 
-console.log(httpGet(apiurl));
+var apiurl = 'http://gentle-hamlet-8813.herokuapp.com/question';
 
+// function httpGet(URL) {
+//     xmlHttp = new XMLHttpRequest();
+//     xmlHttp.open("GET", URL, false);
+//     xmlHttp.send(null);
+
+//     return xmlHttp.responseText;
+//   }
+
+// console.log(httpGet(apiurl));
+
+
+// $.get(apiurl, function(data) {
+//   console.log(data);
+// });
 
 var questionnum = 0;
 var score = 0;
@@ -70,6 +77,7 @@ function setupQuestions (qnum) {
 
 $(document).ready(function() {
 setupQuestions(0);
+jsonlib.fetch('http://localhost:5000', function(m) { console.log(m.content); });
 
 $('.scorebut').on('click', function () {
 

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response
 import json
 
 
@@ -24,13 +24,13 @@ app.logger.addHandler(file_handler)
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
 
-@app.route('/question', methods=['GET'])
+  return Response(json.dumps(questions), mimetype='application/json')
 
-# questions = [{"question":"Who is Prime Minister of the United Kingdom?","choices":["David Cameron","Gordon Brown","Winston Churchill","Tony Blair"],"correctAnswer":0},
-# {"question":"What is the landspeed of an African Swallow?","choices":["100km/hr","24mph","5mph","Tony Blair"],"correctAnswer":1},
-# {"question":"What is the capital of Slovenia?","choices":["Ljubljana","Maribor","Celje"],"correctAnswer":0}]
+
+
+
+@app.route('/questiongen', methods=['GET'])
 
 def questionroute():
   return next(q)
