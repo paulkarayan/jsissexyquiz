@@ -19,7 +19,9 @@ h1 {
   margin-left: 100px;
 }
 
-
+.allQuestion {
+  display: none;
+}
 
 
 .form {

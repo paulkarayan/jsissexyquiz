@@ -1,26 +1,26 @@
 //provide as JSON. But I want to feed using flask instead so will remove
 
-var allQuestions = [
-{
-    question: "Who is Prime Minister of the United Kingdom?",
-    choices: ["David Cameron", "Gordon Brown", "Winston Churchill", "Tony Blair"],
-    correctAnswer: 0
-}, {
-    question: "What is the landspeed of an African Swallow?",
-    choices: ["100km/hr", "24mph", "5mph", "Tony Blair"],
-    correctAnswer: 1
-},
+// var allQuestions = [
+// {
+//     question: "Who is Prime Minister of the United Kingdom?",
+//     choices: ["David Cameron", "Gordon Brown", "Winston Churchill", "Tony Blair"],
+//     correctAnswer: 0
+// }, {
+//     question: "What is the landspeed of an African Swallow?",
+//     choices: ["100km/hr", "24mph", "5mph", "Tony Blair"],
+//     correctAnswer: 1
+// },
 
-      {question: "What is the capital of Slovenia?",  choices: ["Ljubljana", "Maribor", "Celje"],         correctAnswer: 0}
-];
+//       {question: "What is the capital of Slovenia?",  choices: ["Ljubljana", "Maribor", "Celje"],         correctAnswer: 0}
+// ];
 
-jsonQ = JSON.stringify(allQuestions);
-
-
+// jsonQ = JSON.stringify(allQuestions);
 
 
 
-var apiurl = 'http://gentle-hamlet-8813.herokuapp.com/question';
+
+
+var apiurl = 'http://gentle-hamlet-8813.herokuapp.com/';
 
 // function httpGet(URL) {
 //     xmlHttp = new XMLHttpRequest();
@@ -41,15 +41,29 @@ var questionnum = 0;
 var score = 0;
 var qtext = "Quiz - Question 1";
 var stext = "Score: 0";
+var answernum = 2;
+
+
+
+$(document).ready(function() {
+
+jsonlib.fetch('http://gentle-hamlet-8813.herokuapp.com/', function(m) {
+
+  $(".allQuestion").text(m.content);
+
+var blah = $(".allQuestion").text();
+var allQuestions = JSON.parse(blah);
+
+//console.log(allQuestions, typeof allQuestions);
+
 var question = allQuestions[questionnum];
 var choices = question['choices'];
-var answernum = 2;
 
 
 
 function setupQuestions (qnum) {
 
-    console.log(qnum,question,"<-qunum in setupQuestions");
+    console.log(qnum,"<-qunum in setupQuestions");
 
     question = allQuestions[questionnum];
     $(".question").text(question['question']);
@@ -75,9 +89,10 @@ function setupQuestions (qnum) {
 
 
 
-$(document).ready(function() {
-setupQuestions(0);
-jsonlib.fetch('http://localhost:5000', function(m) { console.log(m.content); });
+
+console.log(question, choices, "<-- question, choices");
+
+setupQuestions(0)
 
 $('.scorebut').on('click', function () {
 
@@ -116,3 +131,10 @@ $('.scorebut').on('click', function () {
   };
 });
 });
+
+
+
+ })
+
+
+
