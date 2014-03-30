@@ -16,33 +16,17 @@
 
 // jsonQ = JSON.stringify(allQuestions);
 
-
-
-
-
 var apiurl = 'http://gentle-hamlet-8813.herokuapp.com/';
-
-// function httpGet(URL) {
-//     xmlHttp = new XMLHttpRequest();
-//     xmlHttp.open("GET", URL, false);
-//     xmlHttp.send(null);
-
-//     return xmlHttp.responseText;
-//   }
-
-// console.log(httpGet(apiurl));
-
-
-// $.get(apiurl, function(data) {
-//   console.log(data);
-// });
 
 var questionnum = 0;
 var score = 0;
 var qtext = "Quiz - Question 1";
 var stext = "Score: 0";
 var answernum = 2;
+var oldanswers = {};
 
+$(".body").hide();
+$('.scorebut :input[value="Back"]').hide();
 
 
 $(document).ready(function() {
@@ -66,7 +50,7 @@ function setupQuestions (qnum) {
     console.log(qnum,"<-qunum in setupQuestions");
 
     question = allQuestions[questionnum];
-    $(".question").text(question['question']);
+
     choices = question['choices'];
 
     correct = question['correctAnswer']
@@ -74,14 +58,22 @@ function setupQuestions (qnum) {
     qtext = "Quiz - Question " + (qnum + 1);
     stext = "Score: " + score;
 
-    $("#qq").text(qtext);
-    $("#score").text(stext);
+    $(".question").text(question['question']).hide().fadeIn(500);
+    $("#qq").hide().text(qtext).fadeIn(500);
+    $("#score").hide().text(stext).fadeIn(500);
+    $('<p>Your Answer:</p>').appendTo(".question");
 
-     console.log(choices, choices.length);
+
+    // console.log(choices, choices.length);
 
      for (var i = 0; i < choices.length; i++) {
         var answerinputs = $('<input type="radio" name="answer" value="' + i + '">' + choices[i] + '</input>')
-        $(answerinputs).appendTo('#options');
+        $(answerinputs).hide().appendTo('#options').fadeIn(500);
+    };
+
+    console.log(questionnum);
+  if (questionnum === 1) {
+  $('#back').show();
     };
 
 };
@@ -94,11 +86,32 @@ console.log(question, choices, "<-- question, choices");
 
 setupQuestions(0)
 
-$('.scorebut').on('click', function () {
+
+$('#back').on('click', function () {
+  //alert("thp");
+  questionnum--;
+  console.log(questionnum, "<-back!");
+  //alert("thp");
+
+  var oldanswer = oldanswers[questionnum]
+  $('input[name=answer]:radio:checked').val(oldanswer)
+  console.log(oldanswer, "<-back!");
+})
+
+
+$('.scorebut :input[value="Next"]').on('click', function () {
 
   var answernum = $('input[name=answer]:radio:checked').val()
 
-  //todo - add handling for no checked radio button
+  oldanswers[questionnum] = answernum;
+  console.log(oldanswers, "<---all the old answers");
+
+
+  console.log(answernum);
+  if (!answernum) {
+    alert("Sorry - you didn't select an answer. please select an answer and try again");
+    return
+  }
 
     if (correct === parseInt(answernum)) {
         score = score + 1;

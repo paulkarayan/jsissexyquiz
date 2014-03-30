@@ -64,3 +64,8 @@ h1 {
   width: 100%;
   clear: both;
 }
+
+#back {
+  display: none;
+
+}
