@@ -81,6 +81,14 @@ function setupQuestions (qnum, scoredecrement) {
   $('#back').show();
     };
 
+//handle case of going back muliple times and continue to select
+  if (questionnum in oldanswers){
+  //  alert("it exists!!");
+    oldanswer = parseInt(oldanswers[questionnum]);
+
+    $('input[name=answer][value=' + oldanswer + ']:radio').prop('checked',true);
+}
+
 };
 
 
@@ -102,7 +110,7 @@ $('#back').on('click', function () {
   var oldanswer = parseInt(oldanswers[questionnum])
   question = allQuestions[questionnum];
 
-  console.log(oldanswer, question['correctAnswer'], "<-back! answer, correct answer");
+  //console.log(oldanswer, question['correctAnswer'], "<-back! answer, correct answer");
 
   if (oldanswer === question['correctAnswer']) {
 //send something to decrement the score
@@ -113,8 +121,8 @@ $('#back').on('click', function () {
     setupQuestions(questionnum, 0);
   }
 
-
-  $('input[name=answer][value=' + oldanswer + ']:radio').prop('checked',true);
+//should remove once double back works...
+// $('input[name=answer][value=' + oldanswer + ']:radio').prop('checked',true);
 
 })
 
@@ -124,7 +132,6 @@ $('.scorebut :input[value="Next"]').on('click', function () {
   var answernum = $('input[name=answer]:radio:checked').val()
 
   oldanswers[questionnum] = answernum;
-
 
 
   console.log(answernum);
