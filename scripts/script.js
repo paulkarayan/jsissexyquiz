@@ -45,9 +45,13 @@ var choices = question['choices'];
 
 
 
-function setupQuestions (qnum) {
+function setupQuestions (qnum, scoredecrement) {
 
-    console.log(qnum,"<-qunum in setupQuestions");
+    var sd = scoredecrement
+
+    score = score - sd
+
+    console.log(qnum, score, sd,"<-qunum score sd in setupQuestions");
 
     question = allQuestions[questionnum];
 
@@ -55,15 +59,16 @@ function setupQuestions (qnum) {
 
     correct = question['correctAnswer']
 
+   // alert('stop')
     qtext = "Quiz - Question " + (qnum + 1);
-    stext = "Score: " + score;
+    stext = "Score: " + (score);
 
     $(".question").text(question['question']).hide().fadeIn(500);
     $("#qq").hide().text(qtext).fadeIn(500);
     $("#score").hide().text(stext).fadeIn(500);
     $('<p>Your Answer:</p>').appendTo(".question");
 
-
+    console.log(qnum, score, sd,"<-qunum score sd in setupQuestions v2");
     // console.log(choices, choices.length);
 
      for (var i = 0; i < choices.length; i++) {
@@ -71,7 +76,7 @@ function setupQuestions (qnum) {
         $(answerinputs).hide().appendTo('#options').fadeIn(500);
     };
 
-    console.log(questionnum);
+    //console.log(questionnum);
   if (questionnum === 1) {
   $('#back').show();
     };
@@ -82,20 +87,35 @@ function setupQuestions (qnum) {
 
 
 
-console.log(question, choices, "<-- question, choices");
+//console.log(question, choices, "<-- question, choices");
 
-setupQuestions(0)
+setupQuestions(0,0)
 
 
 $('#back').on('click', function () {
-  //alert("thp");
-  questionnum--;
-  console.log(questionnum, "<-back!");
-  //alert("thp");
 
-  var oldanswer = oldanswers[questionnum]
-  $('input[name=answer]:radio:checked').val(oldanswer)
-  console.log(oldanswer, "<-back!");
+  questionnum--;
+  console.log(questionnum, "<-back qnum only!");
+
+  $('#options').empty();
+
+  var oldanswer = parseInt(oldanswers[questionnum])
+  question = allQuestions[questionnum];
+
+  console.log(oldanswer, question['correctAnswer'], "<-back! answer, correct answer");
+
+  if (oldanswer === question['correctAnswer']) {
+//send something to decrement the score
+
+  setupQuestions(questionnum, 1);
+  } else {
+
+    setupQuestions(questionnum, 0);
+  }
+
+
+  $('input[name=answer][value=' + oldanswer + ']:radio').prop('checked',true);
+
 })
 
 
@@ -104,7 +124,7 @@ $('.scorebut :input[value="Next"]').on('click', function () {
   var answernum = $('input[name=answer]:radio:checked').val()
 
   oldanswers[questionnum] = answernum;
-  console.log(oldanswers, "<---all the old answers");
+
 
 
   console.log(answernum);
@@ -138,9 +158,9 @@ $('.scorebut :input[value="Next"]').on('click', function () {
         $(headeroutput).appendTo('.header');
     } else {
 
-    setupQuestions(questionnum);
+    setupQuestions(questionnum, 0);
 
-    console.log(allQuestions.length,questionnum, "nums before if");
+  //  console.log(allQuestions.length,questionnum, "nums before if");
   };
 });
 });
