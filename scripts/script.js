@@ -1,20 +1,49 @@
-//provide as JSON. But I want to feed using flask instead so will remove
+var CookieUtil = {
+  get: function (name){
+  var cookieName = encodeURIComponent(name) + "=",
+  cookieStart = document.cookie.indexOf(cookieName),
+  cookieValue = null;
+  if (cookieStart > -1){
+  var cookieEnd = document.cookie.indexOf(";", cookieStart);
+  if (cookieEnd == -1){
+  cookieEnd = document.cookie.length;
+  }
+  cookieValue = decodeURIComponent(document.cookie.substring(cookieStart
+  + cookieName.length, cookieEnd));
+  }
+  return cookieValue;
+  },
 
-// var allQuestions = [
-// {
-//     question: "Who is Prime Minister of the United Kingdom?",
-//     choices: ["David Cameron", "Gordon Brown", "Winston Churchill", "Tony Blair"],
-//     correctAnswer: 0
-// }, {
-//     question: "What is the landspeed of an African Swallow?",
-//     choices: ["100km/hr", "24mph", "5mph", "Tony Blair"],
-//     correctAnswer: 1
-// },
+  set: function (name, value, expires, path, domain, secure) {
+  var cookieText = encodeURIComponent(name) + "=" +
+  encodeURIComponent(value);
+  if (expires instanceof Date) {
+  cookieText += "; expires=" + expires.toGMTString();
+  }
+  if (path) {
+  cookieText += "; path=" + path;
+  }
+  if (domain) {
+  cookieText += "; domain=" + domain;
+  }
+  if (secure) {
+  cookieText += "; secure";
+  }
+  document.cookie = cookieText;
+  },
+  unset: function (name, path, domain, secure){
+  this.set(name, "", new Date(0), path, domain, secure);
+}
+};
 
-//       {question: "What is the capital of Slovenia?",  choices: ["Ljubljana", "Maribor", "Celje"],         correctAnswer: 0}
-// ];
 
-// jsonQ = JSON.stringify(allQuestions);
+function blowAway (){
+  CookieUtil.unset("name");
+  sessionStorage.removeItem("name");
+  sessionStorage.removeItem("username");
+}
+
+
 
 var apiurl = 'http://gentle-hamlet-8813.herokuapp.com/';
 
@@ -29,9 +58,14 @@ $(".body").hide();
 $('.scorebut :input[value="Back"]').hide();
 
 
+
 $(document).ready(function() {
 
-jsonlib.fetch('http://gentle-hamlet-8813.herokuapp.com/', function(m) {
+//error for error collection testing
+//throw "Error - collect me please";
+
+
+jsonlib.fetch(apiurl, function(m) {
 
   $(".allQuestion").text(m.content);
 
@@ -43,6 +77,92 @@ var allQuestions = JSON.parse(blah);
 var question = allQuestions[questionnum];
 var choices = question['choices'];
 
+
+
+// set the username
+// if no username...
+
+
+function setUsername (username) {
+      sessionStorage.setItem("username",username);
+    }
+
+function setName (name) {
+  sessionStorage.setItem("name",name);
+  CookieUtil.set("name",name);
+    }
+
+function checkLogin() {
+  var username = sessionStorage.getItem("username");
+  var name = sessionStorage.getItem("name");
+  var cookiename = CookieUtil.get("name");
+
+  console.log(username,name,cookiename);
+  console.log(typeof username,typeof name,typeof cookiename);
+
+
+
+  if (cookiename !== null) {
+    alert("hello, again, " + cookiename)
+  }
+
+  if (username !== null) {
+    alert("hello, you have the " + username)
+
+    // put the username in the banner
+
+  } else {
+    console.log("no username");
+    // pop the modal to get the username...
+
+
+    $(function() {
+      var test = '<form id="form"><label for="username">Select a Username:</label><br><input type="textarea" id="username" name="username" </input>'
+    $( "#popup" ).dialog({
+    height: 250,
+    width: 300,
+    modal: true
+    });
+    $("#popup").append(test);
+    $("#popup").append('<p><button id="button-id">Submit</button></p></form>');
+    });
+
+
+
+    $('#button-id').click(function() {
+
+var qs = (function(a) {
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i)
+    {
+        var p=a[i].split('=');
+        if (p.length != 2) continue;
+        b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
+})(window.location.search.substr(1).split('&'));
+
+
+      var namez = qs['username'];
+      setUsername(namez);
+      setName(namez);
+      alert( namez );
+
+    console.log(form, namez, "<-form shit");
+
+    $( "#popup" ).dialog('close');
+
+    });
+  }
+}
+
+
+
+
+checkLogin();
+
+// create and manipulate the modal for interacting with user
 
 
 function setupQuestions (qnum, scoredecrement) {

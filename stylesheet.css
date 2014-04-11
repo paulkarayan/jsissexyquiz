@@ -23,6 +23,11 @@ h1 {
   display: none;
 }
 
+#popup {
+  display: none;
+}
+
+
 
 .form {
     font-family: Verdana, Arial, sans-serif;

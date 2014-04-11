@@ -7,9 +7,19 @@
         <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css'/>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
         <script type='text/javascript' src='scripts/script.js'></script>
         <script type='text/javascript' src='scripts/gremlins.min.js'></script>
         <script src="http://call.jsonlib.com/jsonlib.js"></script>
+        <script type="text/javascript">
+    window.onerror=function(msg){
+        $("body").attr("JSError",msg);
+    }
+    </script>
+
+
+
 
   </head>
 
@@ -18,11 +28,12 @@
         <div class="header">
           <h1>
             <span id="qq">
-
             </span>
 
             <span id="score">
+            </span>
 
+            <span id="username">
             </span>
 
           </h1>
@@ -52,5 +63,11 @@
 
           <div class = "allQuestion">
           </div>
+
+        <div id="popup" title="Please Login">
+          <p>
+
+          </p>
+        </div>
 
     </body>
