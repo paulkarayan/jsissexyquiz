@@ -8,7 +8,7 @@
 }
 
 h1 {
-    font-family: Lobster;
+    /*font-family: 'Arvo', Georgia, Times, serif;*/
     color: #FFFFFF;
 
 }
@@ -61,8 +61,10 @@ h1 {
     padding-left: 20px;
     padding-bottom: 20px;
     box-shadow: 3px 3px 3px #444;
-    font-family: Verdana, Arial, sans-serif;
-    font-size: 0.8em;
+
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+
+    font-size: 1em;
 }
 
 #inputs {
