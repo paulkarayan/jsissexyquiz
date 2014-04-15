@@ -103,13 +103,14 @@ function checkLogin() {
 
 
   if (cookiename !== null) {
-    alert("hello, again, " + cookiename)
+// this was for debugging
   }
 
   if (username !== null) {
-    alert("hello, you have the " + username)
+    alert("welcome, " + username)
+    // put the username in the banner+
+     $("#usernameheader").text("Username: " + username);
 
-    // put the username in the banner
 
   } else {
     console.log("no username");
@@ -124,46 +125,36 @@ function checkLogin() {
     modal: true
     });
     $("#popup").append(test);
-    $("#popup").append('<p><button id="button-id">Submit</button></p></form>');
+    $("#popup").append('<input type="submit" button id="button-id"/>')
+    //$("#popup").append('<p><button id="button-id" input type = "submit">Submit</button></p></form>');
     });
 
 
 
     $('#button-id').click(function() {
 
-var qs = (function(a) {
-    if (a == "") return {};
-    var b = {};
-    for (var i = 0; i < a.length; ++i)
-    {
-        var p=a[i].split('=');
-        if (p.length != 2) continue;
-        b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-    }
-    return b;
-})(window.location.search.substr(1).split('&'));
+      var namez = $('#username').val()
 
-
-      var namez = qs['username'];
       setUsername(namez);
       setName(namez);
-      alert( namez );
+      //alert( namez );
+
+      $("#usernameheader").text("Username: " + namez);
 
     console.log(form, namez, "<-form shit");
 
     $( "#popup" ).dialog('close');
+
+    //window.location.reload()
 
     });
   }
 }
 
 
-
-
 checkLogin();
 
 // create and manipulate the modal for interacting with user
-
 
 function setupQuestions (qnum, scoredecrement) {
 
@@ -210,10 +201,6 @@ function setupQuestions (qnum, scoredecrement) {
 }
 
 };
-
-
-
-
 
 //console.log(question, choices, "<-- question, choices");
 
@@ -279,10 +266,33 @@ $('.scorebut :input[value="Next"]').on('click', function () {
         $('.wrapper').empty();
         $('.header').empty();
 
-        var finalscoreoutput = $('<h2> thanks for playing! your score was: ' + score + '</h2>')
+var username = sessionStorage.getItem("username");
+
+
+if (!localStorage["scorehistory"]) {
+  localStorage["scorehistory"] = JSON.stringify(" are: ");
+};
+
+var storedNames = JSON.parse(localStorage["scorehistory"]);
+
+storedNames += username + ":" + score + ",";
+
+localStorage["scorehistory"] = JSON.stringify(storedNames);
+
+storedNames = JSON.parse(localStorage["scorehistory"]);
+
+console.log (storedNames, "<---the shits");
+          //user get the most recent score only... no logic here..
+
+
+
+        var finalscoreoutput = $('<h2> thanks for playing! your score was: ' + score + '</h2><p> other scores' + storedNames+'</p>')
+
+
         $(finalscoreoutput).appendTo('.wrapper');
         var headeroutput = $('<h1> Quiz - Final Score </h2>')
         $(headeroutput).appendTo('.header');
+
     } else {
 
     setupQuestions(questionnum, 0);
